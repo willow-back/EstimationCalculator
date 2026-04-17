@@ -4,6 +4,7 @@ import estimationData from './data/estimationGuide.json';
 import { ChatAiService } from './services/ChatAiService';
 import type { ChatAiResponse } from './services/ChatAiService';
 import { BrainCircuit, CheckCircle2, AlertCircle, Info, Settings, X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 function App() {
   const [jiraDescription, setJiraDescription] = useState('');
@@ -134,8 +135,19 @@ function App() {
               <h3 style={{ fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <CheckCircle2 size={18} color="#10b981" /> AI Assumptions
               </h3>
-              <div style={{ whiteSpace: 'pre-wrap', fontSize: '14px', background: '#f8fafc', padding: '1rem', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                {aiResponse.output}
+              <div style={{ fontSize: '14px', background: '#f8fafc', padding: '1rem', borderRadius: '4px', border: '1px solid #e2e8f0', lineHeight: '1.6' }}>
+                <ReactMarkdown
+                  components={{
+                    ul: ({ node, ...props }) => <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem', marginBottom: '0.5rem' }} {...props} />,
+                    li: ({ node, ...props }) => <li style={{ marginBottom: '0.3rem' }} {...props} />,
+                    p: ({ node, ...props }) => <p style={{ marginBottom: '0.5rem' }} {...props} />,
+                    strong: ({ node, ...props }) => <strong style={{ fontWeight: 'bold' }} {...props} />,
+                    em: ({ node, ...props }) => <em style={{ fontStyle: 'italic' }} {...props} />,
+                    code: ({ node, ...props }) => <code style={{ background: '#e2e8f0', padding: '2px 4px', borderRadius: '2px', fontFamily: 'monospace', fontSize: '13px' }} {...props} />
+                  }}
+                >
+                  {aiResponse.output}
+                </ReactMarkdown>
               </div>
               <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '5px', textAlign: 'right' }}>
                 Powered by ChatAI | Model: {aiResponse.model || 'Unknown'}
@@ -325,7 +337,6 @@ function App() {
                 type="text"
                 value={tempApiUrl}
                 onChange={(e) => setTempApiUrl(e.target.value)}
-                placeholder="https://dev.outsystems.byte.enterprises/FujitsuChatAI_API/rest/OpenAIWrapper/v1/chat/completions"
                 style={{
                   width: '100%',
                   padding: '10px',
