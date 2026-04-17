@@ -11,7 +11,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [benchmarkQuantities, setBenchmarkQuantities] = useState<Record<number, number>>({});
   const [activeMultipliers, setActiveMultipliers] = useState<string[]>([]);
   
   const [showSettings, setShowSettings] = useState(false);
@@ -24,8 +24,16 @@ function App() {
     setShowSettings(false);
   };
 
-  const toggleBenchmark = (id: number) => {
-    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  const updateBenchmarkQuantity = (id: number, quantity: number) => {
+    setBenchmarkQuantities(prev => {
+      const updated = { ...prev };
+      if (quantity <= 0) {
+        delete updated[id];
+      } else {
+        updated[id] = quantity;
+      }
+      return updated;
+    });
   };
 
   const toggleMultiplier = (id: string) => {
@@ -36,11 +44,12 @@ function App() {
     let min = 0;
     let max = 0;
 
-    selectedIds.forEach(id => {
+    Object.entries(benchmarkQuantities).forEach(([idStr, quantity]) => {
+      const id = parseInt(idStr);
       const item = estimationData.benchmarks.find(b => b.id === id);
       if (item) {
-        min += item.min;
-        max += item.max;
+        min += item.min * quantity;
+        max += item.max * quantity;
       }
     });
 
@@ -53,7 +62,7 @@ function App() {
       min: min * (1 + multiplierTotal),
       max: max * (1 + multiplierTotal)
     };
-  }, [selectedIds, activeMultipliers]);
+  }, [benchmarkQuantities, activeMultipliers]);
 
   const handleAnalyze = async () => {
     if (!jiraDescription.trim()) return;
@@ -143,24 +152,74 @@ function App() {
             <div key={category} className="guide-category">
               <div className="category-title">{category}</div>
               <div className="benchmark-list">
-                {estimationData.benchmarks.filter(b => b.category === category).map(benchmark => (
-                  <div 
-                    key={benchmark.id} 
-                    className={`benchmark-item ${selectedIds.includes(benchmark.id) ? 'selected' : ''}`}
-                    onClick={() => toggleBenchmark(benchmark.id)}
-                  >
-                    <input type="checkbox" checked={selectedIds.includes(benchmark.id)} readOnly />
-                    <div className="benchmark-info">
-                      <div className="benchmark-name">
-                        {benchmark.task}
-                        <span className="effort-badge">
-                          {benchmark.min === benchmark.max ? `${benchmark.min}h` : `${benchmark.min}-${benchmark.max}h`}
-                        </span>
+                {estimationData.benchmarks.filter(b => b.category === category).map(benchmark => {
+                  const quantity = benchmarkQuantities[benchmark.id] || 0;
+                  return (
+                    <div 
+                      key={benchmark.id} 
+                      className={`benchmark-item ${quantity > 0 ? 'selected' : ''}`}
+                      style={{ cursor: 'default' }}
+                    >
+                      <div className="benchmark-info">
+                        <div className="benchmark-name">
+                          {benchmark.task}
+                          <span className="effort-badge">
+                            {benchmark.min === benchmark.max ? `${benchmark.min}h` : `${benchmark.min}-${benchmark.max}h`}
+                          </span>
+                        </div>
+                        <div className="benchmark-desc">{benchmark.description}</div>
                       </div>
-                      <div className="benchmark-desc">{benchmark.description}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '120px' }}>
+                        <button
+                          onClick={() => updateBenchmarkQuantity(benchmark.id, quantity - 1)}
+                          style={{
+                            background: '#e2e8f0',
+                            border: 'none',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            color: '#475569'
+                          }}
+                        >
+                          −
+                        </button>
+                        <input
+                          type="number"
+                          min="0"
+                          value={quantity}
+                          onChange={(e) => updateBenchmarkQuantity(benchmark.id, parseInt(e.target.value) || 0)}
+                          style={{
+                            width: '50px',
+                            textAlign: 'center',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '4px',
+                            padding: '4px',
+                            fontSize: '14px'
+                          }}
+                        />
+                        <button
+                          onClick={() => updateBenchmarkQuantity(benchmark.id, quantity + 1)}
+                          style={{
+                            background: '#dbeafe',
+                            border: 'none',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            color: '#0284c7'
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -196,7 +255,7 @@ function App() {
       <footer className="footer-sum">
         <div className="sum-item">
           <div style={{ fontSize: '12px', color: '#94a3b8' }}>SELECTED TASKS</div>
-          <div style={{ fontWeight: 'bold' }}>{selectedIds.length} items</div>
+          <div style={{ fontWeight: 'bold' }}>{Object.values(benchmarkQuantities).reduce((a, b) => a + b, 0)} items</div>
         </div>
         <div className="sum-item">
           <div style={{ fontSize: '12px', color: '#94a3b8' }}>TOTAL EFFORT (MIN)</div>
