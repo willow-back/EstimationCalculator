@@ -6,9 +6,23 @@ export interface ChatAiResponse {
 }
 
 export class ChatAiService {
-  private static WRAPPER_URL = 'https://dev.outsystems.byte.enterprises/FujitsuChatAI_API/rest/OpenAIWrapper/v1/chat/completions';
+  private static readonly STORAGE_KEY = 'chatai_api_url';
+
+  static setApiUrl(url: string): void {
+    localStorage.setItem(this.STORAGE_KEY, url);
+  }
+
+  static getApiUrl(): string {
+    return localStorage.getItem(this.STORAGE_KEY) || '';
+  }
 
   static async analyzeJira(jiraDescription: string): Promise<ChatAiResponse> {
+    const apiUrl = this.getApiUrl();
+    
+    if (!apiUrl.trim()) {
+      throw new Error('API URL is not configured. Please set the API URL in settings.');
+    }
+
     const prompt = `You are a technical analyst. Based on the following Jira task description, generate a concise list of features or technical tasks required for implementation. Focus on OutSystems development.
     
     Jira Description:
@@ -16,7 +30,7 @@ export class ChatAiService {
     
     Format the output as a bulleted list of features.`;
 
-    const response = await fetch(this.WRAPPER_URL, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,9 +59,4 @@ export class ChatAiService {
       model: data.model
     };
   }
-
-  // Keeping these for potential future use or to avoid breaking imports, 
-  // but they are no longer needed for the current wrapper.
-  static saveConfig(_config: any) {}
-  static getConfig() { return null; }
 }
