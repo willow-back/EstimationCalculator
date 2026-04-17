@@ -264,6 +264,11 @@ function App() {
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', fontSize: '14px' }}>
                 ChatAI API URL
               </label>
+              {apiUrl && (
+                <div style={{ fontSize: '12px', color: '#10b981', marginBottom: '0.5rem' }}>
+                  ✓ URL currently configured
+                </div>
+              )}
               <input
                 type="text"
                 value={tempApiUrl}
