@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import './App.css';
 import estimationData from './data/estimationGuide.json';
 import { ChatAiService } from './services/ChatAiService';
@@ -15,15 +15,8 @@ function App() {
   const [activeMultipliers, setActiveMultipliers] = useState<string[]>([]);
   
   const [showSettings, setShowSettings] = useState(false);
-  const [apiUrl, setApiUrl] = useState('');
-  const [tempApiUrl, setTempApiUrl] = useState('');
-
-  useEffect(() => {
-    // Load API URL from localStorage on mount
-    const savedUrl = ChatAiService.getApiUrl();
-    setApiUrl(savedUrl);
-    setTempApiUrl(savedUrl);
-  }, []);
+  const [apiUrl, setApiUrl] = useState(() => ChatAiService.getApiUrl());
+  const [tempApiUrl, setTempApiUrl] = useState(() => ChatAiService.getApiUrl());
 
   const handleSaveApiUrl = () => {
     ChatAiService.setApiUrl(tempApiUrl);
@@ -69,8 +62,8 @@ function App() {
     try {
       const result = await ChatAiService.analyzeJira(jiraDescription);
       setAiResponse(result);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setLoading(false);
     }
