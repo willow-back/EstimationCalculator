@@ -1,0 +1,25 @@
+{
+  "benchmarks": [
+    { "id": 1, "category": "Data Modeling", "task": "New Entity", "complexity": "Low", "min": 0.5, "max": 1, "description": "Basic attributes + standard indexes." },
+    { "id": 2, "category": "Data Modeling", "task": "Complex Entity Change", "complexity": "Med", "min": 2, "max": 4, "description": "Adding attributes to large entities (impacts publish time)." },
+    { "id": 3, "category": "Data Modeling", "task": "Static Entity", "complexity": "Low", "min": 0.5, "max": 0.5, "description": "Used for dropdowns/enums." },
+    { "id": 4, "category": "UI Development", "task": "Standard CRUD Screen", "complexity": "Low", "min": 2, "max": 4, "description": "Scaffolding List/Detail screens." },
+    { "id": 5, "category": "UI Development", "task": "Custom Dashboard", "complexity": "High", "min": 8, "max": 16, "description": "Charts, multiple aggregates, complex filters." },
+    { "id": 6, "category": "UI Development", "task": "Reusable Block", "complexity": "Med", "min": 4, "max": 6, "description": "Input parameters, events, local state management." },
+    { "id": 7, "category": "Business Logic", "task": "Simple Server Action", "complexity": "Low", "min": 1, "max": 2, "description": "Basic validation and single CRUD operation." },
+    { "id": 8, "category": "Business Logic", "task": "Complex Logic Action", "complexity": "High", "min": 8, "max": 24, "description": "Multiple external calls, error handling, mapping." },
+    { "id": 9, "category": "Business Logic", "task": "Timer (Background Job)", "complexity": "Med", "min": 4, "max": 8, "description": "Batch processing with \"Check Timeout\" logic." },
+    { "id": 10, "category": "Integrations", "task": "Consume REST API", "complexity": "Med", "min": 4, "max": 8, "description": "JSON mapping, auth, and wrapper actions." },
+    { "id": 11, "category": "Integrations", "task": "Expose REST API", "complexity": "Med", "min": 4, "max": 6, "description": "Security, documentation (Swagger), and logic." },
+    { "id": 12, "category": "Workflows (BPT)", "task": "Simple Activity", "complexity": "Med", "min": 6, "max": 10, "description": "Sequential flow with 1-2 participants." },
+    { "id": 13, "category": "Workflows (BPT)", "task": "Complex Process", "complexity": "High", "min": 24, "max": 40, "description": "Parallel paths, conditional starts, SLA triggers." },
+    { "id": 14, "category": "Security/Misc", "task": "RBAC Implementation", "complexity": "Med", "min": 4, "max": 8, "description": "Defining roles and wrapping logic in CheckRole." },
+    { "id": 15, "category": "Security/Misc", "task": "Email Notification", "complexity": "Low", "min": 2, "max": 4, "description": "Template design and trigger logic." }
+  ],
+  "multipliers": [
+    { "id": "legacy", "name": "Legacy Data", "value": 0.20, "description": "For external SQL databases with inconsistent naming or types (+20%)" },
+    { "id": "offline", "name": "Mobile Offline", "value": 0.50, "description": "Developing offline-first requires complex data sync logic (+50%)" },
+    { "id": "customui", "name": "Custom UI/UX", "value": 0.30, "description": "For \"Pixel Perfect\" CSS that deviates from OutSystems UI defaults (+30%)" },
+    { "id": "large", "name": "Large-Scale Environment", "value": 0.10, "description": "Accounts for longer \"One-Click Publish\" times in complex infrastructures (+10%)" }
+  ]
+}

@@ -1,0 +1,224 @@
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  flex: 1;
+  overflow: hidden;
+  padding-bottom: 6rem; /* Space for footer */
+}
+
+.left-pane, .right-pane {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+h2 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.jira-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 14px;
+}
+
+.analyze-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.analyze-btn:hover {
+  background: #1d4ed8;
+}
+
+.ai-results {
+  margin-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+}
+
+.guide-category {
+  margin-bottom: 2rem;
+}
+
+.category-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #64748b;
+  font-size: 12px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #2563eb;
+  padding-left: 0.5rem;
+}
+
+.benchmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.benchmark-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #f1f5f9;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.benchmark-item:hover {
+  background: #f8fafc;
+}
+
+.benchmark-item.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.benchmark-info {
+  flex: 1;
+}
+
+.benchmark-name {
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+.benchmark-desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.effort-badge {
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.multipliers-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #e2e8f0;
+}
+
+.multiplier-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.footer-sum {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #1e293b;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+}
+
+.sum-item {
+  text-align: center;
+}
+
+.sum-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #60a5fa;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 500px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
